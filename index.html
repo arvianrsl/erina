@@ -1,1 +1,1944 @@
-y
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#2ecc71">
+    <meta name="description" content="SmartTask - Aplikasi manajemen tugas harian yang produktif">
+    <title>SmartTask Premium - Kelola Tugas Harian Anda</title>
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    
+    <!-- Google Fonts - Poppins -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Manifest untuk PWA -->
+    <link rel="manifest" href="#" id="manifest-placeholder">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #e8f5e9 0%, #f1f8e9 100%);
+            min-height: 100vh;
+            transition: all 0.3s ease;
+        }
+        
+        body.dark-mode {
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            color: #ffffff;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);
+            color: white;
+            padding: 1rem 0;
+            box-shadow: 0 2px 10px rgba(46, 204, 113, 0.3);
+        }
+        
+        body.dark-mode .header {
+            background: linear-gradient(135deg, #1e8449 0%, #145a32 100%);
+        }
+        
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .premium-badge {
+            background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
+            color: #000;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+            animation: shimmer 2s infinite;
+        }
+        
+        @keyframes shimmer {
+            0%, 100% { box-shadow: 0 0 10px rgba(255, 215, 0, 0.5); }
+            50% { box-shadow: 0 0 20px rgba(255, 215, 0, 0.8); }
+        }
+        
+        .auth-container {
+            max-width: 450px;
+            margin: 3rem auto;
+            padding: 2rem;
+        }
+        
+        .auth-card {
+            background: white;
+            border-radius: 20px;
+            padding: 2.5rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            animation: slideUp 0.5s ease;
+        }
+        
+        body.dark-mode .auth-card {
+            background: #2d2d2d;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+        
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .auth-title {
+            color: #2ecc71;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+        
+        body.dark-mode .auth-title {
+            color: #2ecc71;
+        }
+        
+        .form-control {
+            border-radius: 10px;
+            padding: 0.75rem 1rem;
+            border: 2px solid #e0e0e0;
+            transition: all 0.3s ease;
+        }
+        
+        body.dark-mode .form-control {
+            background: #1a1a1a;
+            border-color: #444;
+            color: #ffffff;
+        }
+        
+        .form-control:focus {
+            border-color: #2ecc71;
+            box-shadow: 0 0 0 0.2rem rgba(46, 204, 113, 0.25);
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);
+            border: none;
+            border-radius: 10px;
+            padding: 0.75rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(46, 204, 113, 0.4);
+        }
+        
+        .btn-premium {
+            background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
+            border: none;
+            border-radius: 10px;
+            padding: 0.75rem;
+            font-weight: 600;
+            color: #000;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-premium:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(255, 215, 0, 0.5);
+            color: #000;
+        }
+        
+        .btn-outline-primary {
+            border: 2px solid #2ecc71;
+            color: #2ecc71;
+            border-radius: 10px;
+            padding: 0.75rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-outline-primary:hover {
+            background: #2ecc71;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(46, 204, 113, 0.4);
+        }
+        
+        .main-container {
+            max-width: 900px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+        
+        .task-form-card {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+            margin-bottom: 2rem;
+        }
+        
+        body.dark-mode .task-form-card {
+            background: #2d2d2d;
+        }
+        
+        .task-card {
+            background: white;
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+            border-left: 5px solid #2ecc71;
+            position: relative;
+        }
+        
+        body.dark-mode .task-card {
+            background: #2d2d2d;
+        }
+        
+        .task-card.premium-task {
+            border-left-color: #ffd700;
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.05) 0%, rgba(255, 237, 78, 0.05) 100%);
+        }
+        
+        .task-card.high-priority {
+            border-left-color: #e74c3c;
+        }
+        
+        .task-card.medium-priority {
+            border-left-color: #f39c12;
+        }
+        
+        .task-card.low-priority {
+            border-left-color: #3498db;
+        }
+        
+        .task-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        .task-card.completed {
+            opacity: 0.7;
+            border-left-color: #95a5a6;
+        }
+        
+        .task-card.completed .task-title {
+            text-decoration: line-through;
+            color: #95a5a6;
+        }
+        
+        .task-title {
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+        }
+        
+        body.dark-mode .task-title {
+            color: #ffffff;
+        }
+        
+        .task-description {
+            color: #7f8c8d;
+            margin-bottom: 1rem;
+        }
+        
+        body.dark-mode .task-description {
+            color: #bdc3c7;
+        }
+        
+        .task-actions {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+        
+        .btn-sm {
+            border-radius: 8px;
+            padding: 0.4rem 0.8rem;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-success:hover, .btn-danger:hover, .btn-secondary:hover {
+            transform: scale(1.05);
+        }
+        
+        .filter-buttons {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+        
+        .filter-btn {
+            border-radius: 20px;
+            padding: 0.5rem 1.5rem;
+            font-size: 0.9rem;
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 3rem 1rem;
+            color: #95a5a6;
+        }
+        
+        .empty-state i {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+        }
+        
+        .profile-card {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+            margin-bottom: 2rem;
+        }
+        
+        body.dark-mode .profile-card {
+            background: #2d2d2d;
+        }
+        
+        .profile-avatar {
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            color: white;
+            margin: 0 auto 1rem;
+            position: relative;
+        }
+        
+        .profile-avatar.premium {
+            background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
+            box-shadow: 0 0 30px rgba(255, 215, 0, 0.5);
+        }
+        
+        .alert {
+            border-radius: 10px;
+            animation: slideDown 0.5s ease;
+        }
+        
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .dark-mode-toggle {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: #2ecc71;
+            border: none;
+            color: white;
+            font-size: 1.2rem;
+            box-shadow: 0 4px 15px rgba(46, 204, 113, 0.4);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+        
+        .dark-mode-toggle:hover {
+            transform: scale(1.1) rotate(180deg);
+        }
+        
+        .install-prompt {
+            background: white;
+            border-radius: 15px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        body.dark-mode .install-prompt {
+            background: #2d2d2d;
+        }
+        
+        /* Premium Modal */
+        .premium-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 9999;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        .premium-modal.show {
+            display: flex;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .premium-content {
+            background: white;
+            border-radius: 20px;
+            padding: 3rem;
+            max-width: 800px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+            animation: scaleIn 0.3s ease;
+        }
+        
+        body.dark-mode .premium-content {
+            background: #2d2d2d;
+        }
+        
+        @keyframes scaleIn {
+            from { transform: scale(0.8); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+        
+        .premium-close {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            font-size: 2rem;
+            color: #7f8c8d;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .premium-close:hover {
+            color: #e74c3c;
+            transform: rotate(90deg);
+        }
+        
+        .pricing-card {
+            border: 3px solid #e0e0e0;
+            border-radius: 15px;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            height: 100%;
+        }
+        
+        .pricing-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+        }
+        
+        .pricing-card.featured {
+            border-color: #ffd700;
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.1) 0%, rgba(255, 237, 78, 0.1) 100%);
+            transform: scale(1.05);
+        }
+        
+        .pricing-card.featured:hover {
+            transform: scale(1.08) translateY(-10px);
+        }
+        
+        .pricing-header {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+        
+        .pricing-price {
+            font-size: 3rem;
+            font-weight: 700;
+            color: #2ecc71;
+            margin-bottom: 0.5rem;
+        }
+        
+        .pricing-card.featured .pricing-price {
+            background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .pricing-period {
+            color: #7f8c8d;
+            margin-bottom: 2rem;
+        }
+        
+        .pricing-features {
+            list-style: none;
+            padding: 0;
+            margin-bottom: 2rem;
+        }
+        
+        .pricing-features li {
+            padding: 0.75rem 0;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        .pricing-features li i {
+            color: #2ecc71;
+            margin-right: 0.5rem;
+        }
+        
+        .pricing-features li.disabled {
+            color: #bdc3c7;
+            text-decoration: line-through;
+        }
+        
+        .pricing-features li.disabled i {
+            color: #bdc3c7;
+        }
+        
+        /* Payment Form */
+        .payment-section {
+            display: none;
+            animation: slideUp 0.5s ease;
+        }
+        
+        .payment-section.show {
+            display: block;
+        }
+        
+        .payment-methods {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+        
+        .payment-method {
+            flex: 1;
+            min-width: 150px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            padding: 1rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .payment-method:hover {
+            border-color: #2ecc71;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .payment-method.active {
+            border-color: #2ecc71;
+            background: rgba(46, 204, 113, 0.1);
+        }
+        
+        .payment-method i {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+        
+        .lock-icon {
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+            background: rgba(0, 0, 0, 0.7);
+            color: #ffd700;
+            padding: 0.25rem 0.5rem;
+            border-radius: 5px;
+            font-size: 0.8rem;
+        }
+        
+        .category-badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 15px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-right: 0.5rem;
+        }
+        
+        .priority-badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 15px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        
+        .stats-card {
+            background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);
+            color: white;
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .stats-card.premium {
+            background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
+            color: #000;
+        }
+        
+        @media (max-width: 768px) {
+            .auth-card {
+                padding: 1.5rem;
+            }
+            
+            .task-form-card {
+                padding: 1.5rem;
+            }
+            
+            .logo {
+                font-size: 1.2rem;
+            }
+            
+            .premium-content {
+                padding: 1.5rem;
+            }
+            
+            .pricing-card.featured {
+                transform: scale(1);
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header class="header" id="mainHeader" style="display: none;">
+        <div class="container">
+            <div class="d-flex justify-content-between align-items-center flex-wrap">
+                <div class="logo">
+                    <i class="bi bi-check2-square"></i>
+                    <span>SmartTask</span>
+                    <span class="premium-badge" id="headerPremiumBadge" style="display: none;">
+                        <i class="bi bi-star-fill"></i> PREMIUM
+                    </span>
+                </div>
+                <div class="d-flex gap-2 align-items-center flex-wrap">
+                    <button class="btn btn-sm btn-warning" onclick="showPremiumModal()" id="upgradeBtnHeader">
+                        <i class="bi bi-star"></i> Upgrade
+                    </button>
+                    <button class="btn btn-sm btn-light" onclick="showProfile()">
+                        <i class="bi bi-person-circle"></i> <span id="headerUserName"></span>
+                    </button>
+                    <button class="btn btn-sm btn-outline-light" onclick="logout()">
+                        <i class="bi bi-box-arrow-right"></i> Logout
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Auth Container -->
+    <div class="auth-container" id="authContainer">
+        <!-- Login Form -->
+        <div class="auth-card" id="loginForm">
+            <h2 class="auth-title"><i class="bi bi-check2-square"></i> SmartTask</h2>
+            <h5 class="text-center mb-4">Masuk ke Akun Anda</h5>
+            
+            <div id="loginAlert"></div>
+            
+            <form onsubmit="login(event)">
+                <div class="mb-3">
+                    <label class="form-label">Email</label>
+                    <input type="email" class="form-control" id="loginEmail" placeholder="nama@email.com" required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Password</label>
+                    <input type="password" class="form-control" id="loginPassword" placeholder="Minimal 6 karakter" required>
+                </div>
+                <div class="mb-3 form-check">
+                    <input type="checkbox" class="form-check-input" id="rememberMe">
+                    <label class="form-check-label" for="rememberMe">Ingat Saya</label>
+                </div>
+                <button type="submit" class="btn btn-primary w-100 mb-3">
+                    <i class="bi bi-box-arrow-in-right"></i> Masuk
+                </button>
+                <div class="text-center">
+                    <span>Belum punya akun? </span>
+                    <a href="#" onclick="showRegister(event)" class="text-decoration-none fw-bold" style="color: #2ecc71;">Daftar</a>
+                </div>
+            </form>
+        </div>
+
+        <!-- Register Form -->
+        <div class="auth-card" id="registerForm" style="display: none;">
+            <h2 class="auth-title"><i class="bi bi-check2-square"></i> SmartTask</h2>
+            <h5 class="text-center mb-4">Buat Akun Baru</h5>
+            
+            <div id="registerAlert"></div>
+            
+            <form onsubmit="register(event)">
+                <div class="mb-3">
+                    <label class="form-label">Nama Lengkap</label>
+                    <input type="text" class="form-control" id="registerName" placeholder="Nama Anda" required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Email</label>
+                    <input type="email" class="form-control" id="registerEmail" placeholder="nama@email.com" required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Password</label>
+                    <input type="password" class="form-control" id="registerPassword" placeholder="Minimal 6 karakter" required minlength="6">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Konfirmasi Password</label>
+                    <input type="password" class="form-control" id="registerConfirmPassword" placeholder="Ulangi password" required minlength="6">
+                </div>
+                <button type="submit" class="btn btn-primary w-100 mb-3">
+                    <i class="bi bi-person-plus"></i> Daftar
+                </button>
+                <div class="text-center">
+                    <span>Sudah punya akun? </span>
+                    <a href="#" onclick="showLogin(event)" class="text-decoration-none fw-bold" style="color: #2ecc71;">Masuk</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Main App Container -->
+    <div class="main-container" id="mainContainer" style="display: none;">
+        <!-- PWA Install Prompt -->
+        <div class="install-prompt" id="installPrompt" style="display: none;">
+            <div>
+                <strong>Install SmartTask</strong>
+                <p class="mb-0 small">Tambahkan ke home screen untuk akses cepat</p>
+            </div>
+            <button class="btn btn-sm btn-primary" onclick="installPWA()">Install</button>
+        </div>
+
+        <!-- Profile Section -->
+        <div id="profileSection" style="display: none;">
+            <div class="profile-card">
+                <div class="profile-avatar" id="profileAvatar">
+                    <i class="bi bi-person-fill"></i>
+                </div>
+                <h4 class="text-center mb-2" id="profileName"></h4>
+                <p class="text-center text-muted mb-2" id="profileEmail"></p>
+                <p class="text-center mb-4" id="profilePlan">
+                    <span class="badge bg-secondary">Free Plan</span>
+                </p>
+                
+                <div class="row g-3 mb-4">
+                    <div class="col-md-4">
+                        <div class="text-center p-3 bg-light rounded">
+                            <h3 class="text-primary mb-0" id="totalTasks">0</h3>
+                            <small>Total Tugas</small>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="text-center p-3 bg-light rounded">
+                            <h3 class="text-success mb-0" id="completedTasks">0</h3>
+                            <small>Tugas Selesai</small>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="text-center p-3 bg-light rounded">
+                            <h3 class="text-warning mb-0" id="activeTasks">0</h3>
+                            <small>Aktif</small>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Premium Stats (Only for Premium Users) -->
+                <div id="premiumStats" style="display: none;">
+                    <div class="stats-card premium mb-3">
+                        <h5><i class="bi bi-graph-up"></i> Statistik Premium</h5>
+                        <div class="row mt-3">
+                            <div class="col-6">
+                                <h4 id="weeklyCompletion">0%</h4>
+                                <small>Completion Rate</small>
+                            </div>
+                            <div class="col-6">
+                                <h4 id="avgCompletionTime">0h</h4>
+                                <small>Avg. Time</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="d-flex gap-2 flex-wrap">
+                    <button class="btn btn-outline-primary flex-fill" onclick="showTasks()">
+                        <i class="bi bi-list-task"></i> Kembali ke Tugas
+                    </button>
+                    <button class="btn btn-premium flex-fill" onclick="showPremiumModal()" id="upgradeBtn">
+                        <i class="bi bi-star-fill"></i> Upgrade Premium
+                    </button>
+                    <button class="btn btn-outline-danger flex-fill" onclick="resetAllTasks()">
+                        <i class="bi bi-trash"></i> Reset Tugas
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Task Section -->
+        <div id="taskSection">
+            <!-- Premium Upsell Banner (Free Users Only) -->
+            <div class="alert alert-warning" id="premiumBanner" style="display: none;">
+                <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+                    <div>
+                        <strong><i class="bi bi-star-fill"></i> Upgrade ke Premium!</strong>
+                        <p class="mb-0 small">Dapatkan unlimited tasks, prioritas, kategori, dan fitur analytics!</p>
+                    </div>
+                    <button class="btn btn-sm btn-warning" onclick="showPremiumModal()">
+                        Lihat Paket
+                    </button>
+                </div>
+            </div>
+
+            <div class="task-form-card">
+                <h4 class="mb-4"><i class="bi bi-plus-circle"></i> Tambah Tugas Baru</h4>
+                <form onsubmit="addTask(event)">
+                    <div class="mb-3">
+                        <label class="form-label">Judul Tugas</label>
+                        <input type="text" class="form-control" id="taskTitle" placeholder="Contoh: Belajar JavaScript" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Deskripsi</label>
+                        <textarea class="form-control" id="taskDescription" rows="3" placeholder="Detail tugas..." required></textarea>
+                    </div>
+                    
+                    <!-- Premium Features -->
+                    <div class="row mb-3" id="premiumTaskFields">
+                        <div class="col-md-4 mb-2">
+                            <label class="form-label">
+                                Prioritas 
+                                <i class="bi bi-lock-fill text-warning premium-feature-lock" title="Fitur Premium" style="display: none;"></i>
+                            </label>
+                            <select class="form-control" id="taskPriority">
+                                <option value="none">Tanpa Prioritas</option>
+                                <option value="high">🔴 Tinggi</option>
+                                <option value="medium">🟡 Sedang</option>
+                                <option value="low">🔵 Rendah</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4 mb-2">
+                            <label class="form-label">
+                                Kategori 
+                                <i class="bi bi-lock-fill text-warning premium-feature-lock" title="Fitur Premium" style="display: none;"></i>
+                            </label>
+                            <select class="form-control" id="taskCategory">
+                                <option value="">Tanpa Kategori</option>
+                                <option value="work">💼 Pekerjaan</option>
+                                <option value="personal">👤 Pribadi</option>
+                                <option value="study">📚 Belajar</option>
+                                <option value="health">🏃 Kesehatan</option>
+                                <option value="other">📌 Lainnya</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4 mb-2">
+                            <label class="form-label">
+                                Deadline 
+                                <i class="bi bi-lock-fill text-warning premium-feature-lock" title="Fitur Premium" style="display: none;"></i>
+                            </label>
+                            <input type="datetime-local" class="form-control" id="taskDeadline">
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary">
+                        <i class="bi bi-plus-lg"></i> Tambah Tugas
+                    </button>
+                    <small class="text-muted ms-2" id="taskLimitInfo">
+                        Free: <span id="currentTaskCount">0</span>/10 tugas
+                    </small>
+                </form>
+            </div>
+
+            <!-- Filter Buttons -->
+            <div class="filter-buttons">
+                <button class="btn btn-primary filter-btn active" onclick="filterTasks('all')">
+                    <i class="bi bi-list"></i> Semua
+                </button>
+                <button class="btn btn-outline-primary filter-btn" onclick="filterTasks('active')">
+                    <i class="bi bi-circle"></i> Belum Selesai
+                </button>
+                <button class="btn btn-outline-primary filter-btn" onclick="filterTasks('completed')">
+                    <i class="bi bi-check-circle"></i> Selesai
+                </button>
+                
+                <!-- Premium Filters -->
+                <button class="btn btn-outline-primary filter-btn premium-filter" onclick="filterTasks('high')">
+                    <i class="bi bi-exclamation-circle"></i> Prioritas Tinggi
+                </button>
+                <button class="btn btn-outline-primary filter-btn premium-filter" onclick="filterTasks('today')">
+                    <i class="bi bi-calendar-day"></i> Hari Ini
+                </button>
+            </div>
+
+            <!-- Search (Premium Feature) -->
+            <div class="mb-3" id="searchSection" style="display: none;">
+                <input type="text" class="form-control" id="searchTask" placeholder="🔍 Cari tugas..." oninput="searchTasks()">
+            </div>
+
+            <!-- Tasks List -->
+            <div id="tasksList"></div>
+        </div>
+    </div>
+
+    <!-- Premium Modal -->
+    <div class="premium-modal" id="premiumModal">
+        <div class="premium-content">
+            <button class="premium-close" onclick="closePremiumModal()">&times;</button>
+            
+            <div id="pricingSection">
+                <div class="text-center mb-5">
+                    <h2 class="mb-3">
+                        <i class="bi bi-star-fill text-warning"></i>
+                        Upgrade ke Premium
+                    </h2>
+                    <p class="text-muted">Tingkatkan produktivitas dengan fitur-fitur unggulan!</p>
+                </div>
+
+                <div class="row g-4 mb-4">
+                    <!-- Free Plan -->
+                    <div class="col-md-6">
+                        <div class="pricing-card">
+                            <div class="pricing-header">Free</div>
+                            <div class="pricing-price">Rp 0</div>
+                            <div class="pricing-period">Gratis selamanya</div>
+                            <ul class="pricing-features">
+                                <li><i class="bi bi-check-circle-fill"></i> Maksimal 10 tugas</li>
+                                <li><i class="bi bi-check-circle-fill"></i> Tandai selesai/belum</li>
+                                <li><i class="bi bi-check-circle-fill"></i> Filter dasar</li>
+                                <li><i class="bi bi-check-circle-fill"></i> Dark mode</li>
+                                <li class="disabled"><i class="bi bi-x-circle-fill"></i> Prioritas tugas</li>
+                                <li class="disabled"><i class="bi bi-x-circle-fill"></i> Kategori tugas</li>
+                                <li class="disabled"><i class="bi bi-x-circle-fill"></i> Deadline reminder</li>
+                                <li class="disabled"><i class="bi bi-x-circle-fill"></i> Analytics</li>
+                                <li class="disabled"><i class="bi bi-x-circle-fill"></i> Export data</li>
+                                <li class="disabled"><i class="bi bi-x-circle-fill"></i> Unlimited tasks</li>
+                            </ul>
+                            <button class="btn btn-outline-secondary w-100" disabled>
+                                Plan Aktif
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Premium Plan -->
+                    <div class="col-md-6">
+                        <div class="pricing-card featured">
+                            <div class="badge bg-warning text-dark mb-2">RECOMMENDED</div>
+                            <div class="pricing-header">Premium</div>
+                            <div class="pricing-price">Rp 49.000</div>
+                            <div class="pricing-period">per bulan</div>
+                            <ul class="pricing-features">
+                                <li><i class="bi bi-check-circle-fill"></i> <strong>Unlimited</strong> tugas</li>
+                                <li><i class="bi bi-check-circle-fill"></i> Prioritas tugas (Tinggi, Sedang, Rendah)</li>
+                                <li><i class="bi bi-check-circle-fill"></i> Kategori custom</li>
+                                <li><i class="bi bi-check-circle-fill"></i> Deadline & reminder</li>
+                                <li><i class="bi bi-check-circle-fill"></i> Analytics & statistik</li>
+                                <li><i class="bi bi-check-circle-fill"></i> Export ke PDF/Excel</li>
+                                <li><i class="bi bi-check-circle-fill"></i> Search & advanced filter</li>
+                                <li><i class="bi bi-check-circle-fill"></i> Cloud backup</li>
+                                <li><i class="bi bi-check-circle-fill"></i> No ads</li>
+                                <li><i class="bi bi-check-circle-fill"></i> Priority support</li>
+                            </ul>
+                            <button class="btn btn-premium w-100" onclick="showPaymentSection()">
+                                <i class="bi bi-star-fill"></i> Pilih Premium
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Payment Section -->
+            <div class="payment-section" id="paymentSection">
+                <button class="btn btn-sm btn-outline-secondary mb-3" onclick="backToPricing()">
+                    <i class="bi bi-arrow-left"></i> Kembali
+                </button>
+                
+                <h4 class="mb-4">Metode Pembayaran</h4>
+                
+                <div class="payment-methods">
+                    <div class="payment-method" onclick="selectPaymentMethod('gopay')">
+                        <i class="bi bi-wallet2" style="color: #00AA13;"></i>
+                        <div><strong>GoPay</strong></div>
+                    </div>
+                    <div class="payment-method" onclick="selectPaymentMethod('ovo')">
+                        <i class="bi bi-wallet2" style="color: #4C3494;"></i>
+                        <div><strong>OVO</strong></div>
+                    </div>
+                    <div class="payment-method" onclick="selectPaymentMethod('dana')">
+                        <i class="bi bi-wallet2" style="color: #118EEA;"></i>
+                        <div><strong>DANA</strong></div>
+                    </div>
+                    <div class="payment-method" onclick="selectPaymentMethod('bank')">
+                        <i class="bi bi-bank" style="color: #2ecc71;"></i>
+                        <div><strong>Transfer Bank</strong></div>
+                    </div>
+                    <div class="payment-method" onclick="selectPaymentMethod('qris')">
+                        <i class="bi bi-qr-code" style="color: #e74c3c;"></i>
+                        <div><strong>QRIS</strong></div>
+                    </div>
+                </div>
+
+                <div id="paymentForm" style="display: none;">
+                    <div class="alert alert-info">
+                        <strong>Total Pembayaran: <span id="totalPayment">Rp 49.000</span></strong>
+                        <p class="mb-0 small">Premium 1 Bulan - SmartTask</p>
+                    </div>
+
+                    <form onsubmit="processPayment(event)">
+                        <div class="mb-3" id="phoneNumberField">
+                            <label class="form-label">Nomor Telepon</label>
+                            <input type="tel" class="form-control" id="paymentPhone" placeholder="08123456789" required>
+                        </div>
+
+                        <div class="mb-3" id="bankAccountField" style="display: none;">
+                            <label class="form-label">Bank</label>
+                            <select class="form-control" id="bankSelect">
+                                <option value="bca">BCA</option>
+                                <option value="mandiri">Mandiri</option>
+                                <option value="bni">BNI</option>
+                                <option value="bri">BRI</option>
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Kode Promo (Opsional)</label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="promoCode" placeholder="Masukkan kode promo">
+                                <button class="btn btn-outline-secondary" type="button" onclick="applyPromo()">
+                                    Terapkan
+                                </button>
+                            </div>
+                            <small class="text-success" id="promoSuccess" style="display: none;">
+                                ✓ Kode promo berhasil diterapkan!
+                            </small>
+                        </div>
+
+                        <div class="mb-3 form-check">
+                            <input type="checkbox" class="form-check-input" id="agreeTerms" required>
+                            <label class="form-check-label" for="agreeTerms">
+                                Saya setuju dengan <a href="#" class="text-primary">syarat dan ketentuan</a>
+                            </label>
+                        </div>
+
+                        <button type="submit" class="btn btn-premium w-100">
+                            <i class="bi bi-credit-card"></i> Bayar Sekarang
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Payment Success -->
+            <div class="payment-section" id="paymentSuccess" style="display: none;">
+                <div class="text-center py-5">
+                    <div style="font-size: 5rem; color: #2ecc71;">
+                        <i class="bi bi-check-circle-fill"></i>
+                    </div>
+                    <h3 class="mb-3">Pembayaran Berhasil!</h3>
+                    <p class="text-muted mb-4">Selamat! Akun Anda telah diupgrade ke Premium</p>
+                    
+                    <div class="alert alert-success">
+                        <strong>Order ID:</strong> <span id="orderId"></span><br>
+                        <strong>Metode:</strong> <span id="paymentMethod"></span><br>
+                        <strong>Aktif hingga:</strong> <span id="expiryDate"></span>
+                    </div>
+
+                    <button class="btn btn-primary" onclick="closePaymentSuccess()">
+                        <i class="bi bi-check"></i> Mulai Gunakan Premium
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Dark Mode Toggle -->
+    <button class="dark-mode-toggle" onclick="toggleDarkMode()" title="Toggle Dark Mode">
+        <i class="bi bi-moon-stars-fill"></i>
+    </button>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        // Global Variables
+        let currentUser = null;
+        let tasks = [];
+        let currentFilter = 'all';
+        let deferredPrompt;
+        let selectedPaymentMethod = '';
+        let currentDiscount = 0;
+
+        // Promo Codes
+        const promoCodes = {
+            'SMART2026': { discount: 10000, description: 'Diskon Rp 10.000' },
+            'NEWUSER': { discount: 5000, description: 'Diskon Rp 5.000' },
+            'PREMIUM50': { discount: 24500, description: 'Diskon 50%' }
+        };
+
+        // Initialize App
+        document.addEventListener('DOMContentLoaded', function() {
+            checkAuth();
+            checkDarkMode();
+            registerServiceWorker();
+            setupPWAInstall();
+            createManifest();
+        });
+
+        // PWA Functions
+        function setupPWAInstall() {
+            window.addEventListener('beforeinstallprompt', (e) => {
+                e.preventDefault();
+                deferredPrompt = e;
+                document.getElementById('installPrompt').style.display = 'flex';
+            });
+        }
+
+        function installPWA() {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                deferredPrompt.userChoice.then((choiceResult) => {
+                    deferredPrompt = null;
+                    document.getElementById('installPrompt').style.display = 'none';
+                });
+            }
+        }
+
+        function createManifest() {
+            const manifest = {
+                name: "SmartTask Premium - Manajemen Tugas",
+                short_name: "SmartTask",
+                description: "Aplikasi manajemen tugas harian yang produktif",
+                start_url: ".",
+                display: "standalone",
+                background_color: "#ffffff",
+                theme_color: "#2ecc71",
+                icons: [
+                    {
+                        src: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect fill='%232ecc71' width='100' height='100'/%3E%3Ctext x='50' y='65' font-size='60' text-anchor='middle' fill='white' font-family='Arial'%3E✓%3C/text%3E%3C/svg%3E",
+                        sizes: "192x192",
+                        type: "image/svg+xml"
+                    }
+                ]
+            };
+            
+            const manifestBlob = new Blob([JSON.stringify(manifest)], {type: 'application/json'});
+            const manifestURL = URL.createObjectURL(manifestBlob);
+            document.getElementById('manifest-placeholder').setAttribute('href', manifestURL);
+        }
+
+        function registerServiceWorker() {
+            if ('serviceWorker' in navigator) {
+                const swCode = `
+                    const CACHE_NAME = 'smarttask-premium-v1';
+                    const urlsToCache = [
+                        '/',
+                        'https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css',
+                        'https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css',
+                        'https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap'
+                    ];
+
+                    self.addEventListener('install', event => {
+                        event.waitUntil(
+                            caches.open(CACHE_NAME)
+                                .then(cache => cache.addAll(urlsToCache))
+                        );
+                    });
+
+                    self.addEventListener('fetch', event => {
+                        event.respondWith(
+                            caches.match(event.request)
+                                .then(response => response || fetch(event.request))
+                        );
+                    });
+                `;
+                
+                const blob = new Blob([swCode], { type: 'application/javascript' });
+                const swUrl = URL.createObjectURL(blob);
+                
+                navigator.serviceWorker.register(swUrl);
+            }
+        }
+
+        // Authentication Functions
+        function checkAuth() {
+            let session = localStorage.getItem('smarttask_session');
+            if (!session) {
+                session = sessionStorage.getItem('smarttask_session');
+            }
+            if (session) {
+                currentUser = JSON.parse(session);
+                showMainApp();
+            }
+        }
+
+        function showRegister(e) {
+            e.preventDefault();
+            document.getElementById('loginForm').style.display = 'none';
+            document.getElementById('registerForm').style.display = 'block';
+        }
+
+        function showLogin(e) {
+            e.preventDefault();
+            document.getElementById('registerForm').style.display = 'none';
+            document.getElementById('loginForm').style.display = 'block';
+        }
+
+        function register(e) {
+            e.preventDefault();
+            
+            const name = document.getElementById('registerName').value.trim();
+            const email = document.getElementById('registerEmail').value.trim().toLowerCase();
+            const password = document.getElementById('registerPassword').value;
+            const confirmPassword = document.getElementById('registerConfirmPassword').value;
+            
+            if (password.length < 6) {
+                showAlert('registerAlert', 'Password minimal 6 karakter!', 'danger');
+                return;
+            }
+            
+            if (password !== confirmPassword) {
+                showAlert('registerAlert', 'Password tidak cocok!', 'danger');
+                return;
+            }
+            
+            let users = JSON.parse(localStorage.getItem('smarttask_users') || '[]');
+            
+            if (users.find(u => u.email === email)) {
+                showAlert('registerAlert', 'Email sudah terdaftar!', 'danger');
+                return;
+            }
+            
+            const hashedPassword = btoa(password);
+            
+            const newUser = {
+                id: Date.now(),
+                name: name,
+                email: email,
+                password: hashedPassword,
+                isPremium: false,
+                premiumExpiry: null
+            };
+            
+            users.push(newUser);
+            localStorage.setItem('smarttask_users', JSON.stringify(users));
+            
+            showAlert('registerAlert', 'Registrasi berhasil! Silakan login.', 'success');
+            
+            setTimeout(() => {
+                showLogin(e);
+            }, 1500);
+        }
+
+        function login(e) {
+            e.preventDefault();
+            
+            const email = document.getElementById('loginEmail').value.trim().toLowerCase();
+            const password = document.getElementById('loginPassword').value;
+            const rememberMe = document.getElementById('rememberMe').checked;
+            
+            const users = JSON.parse(localStorage.getItem('smarttask_users') || '[]');
+            const hashedPassword = btoa(password);
+            
+            const user = users.find(u => u.email === email && u.password === hashedPassword);
+            
+            if (user) {
+                currentUser = {
+                    id: user.id,
+                    name: user.name,
+                    email: user.email,
+                    isPremium: user.isPremium || false,
+                    premiumExpiry: user.premiumExpiry || null
+                };
+                
+                // Check if premium expired
+                if (currentUser.isPremium && currentUser.premiumExpiry) {
+                    const expiryDate = new Date(currentUser.premiumExpiry);
+                    if (expiryDate < new Date()) {
+                        currentUser.isPremium = false;
+                        updateUserPremiumStatus(false, null);
+                        showToast('Premium Anda telah berakhir', 'warning');
+                    }
+                }
+                
+                if (rememberMe) {
+                    localStorage.setItem('smarttask_session', JSON.stringify(currentUser));
+                } else {
+                    sessionStorage.setItem('smarttask_session', JSON.stringify(currentUser));
+                }
+                
+                showMainApp();
+            } else {
+                showAlert('loginAlert', 'Email atau password salah!', 'danger');
+            }
+        }
+
+        function logout() {
+            if (confirm('Apakah Anda yakin ingin keluar?')) {
+                localStorage.removeItem('smarttask_session');
+                sessionStorage.removeItem('smarttask_session');
+                currentUser = null;
+                tasks = [];
+                
+                document.getElementById('authContainer').style.display = 'block';
+                document.getElementById('mainContainer').style.display = 'none';
+                document.getElementById('mainHeader').style.display = 'none';
+                document.getElementById('loginForm').style.display = 'block';
+                document.getElementById('registerForm').style.display = 'none';
+                
+                document.getElementById('loginEmail').value = '';
+                document.getElementById('loginPassword').value = '';
+                document.getElementById('rememberMe').checked = false;
+            }
+        }
+
+        function showMainApp() {
+            document.getElementById('authContainer').style.display = 'none';
+            document.getElementById('mainContainer').style.display = 'block';
+            document.getElementById('mainHeader').style.display = 'block';
+            document.getElementById('headerUserName').textContent = currentUser.name;
+            
+            updatePremiumUI();
+            loadTasks();
+            renderTasks();
+        }
+
+        function updatePremiumUI() {
+            const isPremium = currentUser.isPremium;
+            
+            // Update header
+            if (isPremium) {
+                document.getElementById('headerPremiumBadge').style.display = 'inline-flex';
+                document.getElementById('upgradeBtnHeader').style.display = 'none';
+            } else {
+                document.getElementById('headerPremiumBadge').style.display = 'none';
+                document.getElementById('upgradeBtnHeader').style.display = 'inline-block';
+            }
+            
+            // Enable/disable premium features in form
+            document.getElementById('taskPriority').disabled = !isPremium;
+            document.getElementById('taskCategory').disabled = !isPremium;
+            document.getElementById('taskDeadline').disabled = !isPremium;
+            
+            // Show/hide lock icons
+            document.querySelectorAll('.premium-feature-lock').forEach(icon => {
+                icon.style.display = isPremium ? 'none' : 'inline';
+            });
+            
+            // Show/hide premium sections
+            document.getElementById('premiumBanner').style.display = isPremium ? 'none' : 'block';
+            document.getElementById('searchSection').style.display = isPremium ? 'block' : 'none';
+            document.getElementById('premiumStats').style.display = isPremium ? 'block' : 'none';
+            
+            // Update upgrade button in profile
+            const upgradeBtn = document.getElementById('upgradeBtn');
+            if (isPremium) {
+                upgradeBtn.innerHTML = '<i class="bi bi-star-fill"></i> Premium Aktif';
+                upgradeBtn.classList.remove('btn-premium');
+                upgradeBtn.classList.add('btn-secondary');
+                upgradeBtn.disabled = true;
+            } else {
+                upgradeBtn.innerHTML = '<i class="bi bi-star-fill"></i> Upgrade Premium';
+                upgradeBtn.classList.remove('btn-secondary');
+                upgradeBtn.classList.add('btn-premium');
+                upgradeBtn.disabled = false;
+            }
+            
+            // Enable/disable premium filters
+            document.querySelectorAll('.premium-filter').forEach(btn => {
+                btn.disabled = !isPremium;
+                if (!isPremium) {
+                    btn.title = 'Fitur Premium - Upgrade untuk menggunakan';
+                } else {
+                    btn.title = '';
+                }
+            });
+            
+            // Update task limit info
+            if (isPremium) {
+                document.getElementById('taskLimitInfo').innerHTML = '<span class="badge bg-warning text-dark">Premium: Unlimited</span>';
+            } else {
+                document.getElementById('taskLimitInfo').innerHTML = `Free: <span id="currentTaskCount">${tasks.length}</span>/10 tugas`;
+            }
+        }
+
+        // Task Functions
+        function loadTasks() {
+            const userTasks = localStorage.getItem(`smarttask_tasks_${currentUser.id}`);
+            tasks = userTasks ? JSON.parse(userTasks) : [];
+        }
+
+        function saveTasks() {
+            localStorage.setItem(`smarttask_tasks_${currentUser.id}`, JSON.stringify(tasks));
+        }
+
+        function addTask(e) {
+            e.preventDefault();
+            
+            // Check task limit for free users
+            if (!currentUser.isPremium && tasks.length >= 10) {
+                showToast('Limit tugas tercapai! Upgrade ke Premium untuk unlimited tasks', 'warning');
+                showPremiumModal();
+                return;
+            }
+            
+            const title = document.getElementById('taskTitle').value.trim();
+            const description = document.getElementById('taskDescription').value.trim();
+            const priority = currentUser.isPremium ? document.getElementById('taskPriority').value : 'none';
+            const category = currentUser.isPremium ? document.getElementById('taskCategory').value : '';
+            const deadline = currentUser.isPremium ? document.getElementById('taskDeadline').value : '';
+            
+            const newTask = {
+                id: Date.now(),
+                title: title,
+                description: description,
+                priority: priority,
+                category: category,
+                deadline: deadline,
+                completed: false,
+                createdAt: new Date().toISOString()
+            };
+            
+            tasks.unshift(newTask);
+            saveTasks();
+            
+            // Reset form
+            document.getElementById('taskTitle').value = '';
+            document.getElementById('taskDescription').value = '';
+            if (currentUser.isPremium) {
+                document.getElementById('taskPriority').value = 'none';
+                document.getElementById('taskCategory').value = '';
+                document.getElementById('taskDeadline').value = '';
+            }
+            
+            showToast('Tugas berhasil ditambahkan!', 'success');
+            renderTasks();
+            updatePremiumUI();
+        }
+
+        function toggleTask(id) {
+            const task = tasks.find(t => t.id === id);
+            if (task) {
+                task.completed = !task.completed;
+                if (task.completed) {
+                    task.completedAt = new Date().toISOString();
+                }
+                saveTasks();
+                showToast(task.completed ? 'Tugas selesai! 🎉' : 'Tugas dibuka kembali', 'success');
+                renderTasks();
+            }
+        }
+
+        function deleteTask(id) {
+            if (confirm('Hapus tugas ini?')) {
+                tasks = tasks.filter(t => t.id !== id);
+                saveTasks();
+                showToast('Tugas berhasil dihapus!', 'danger');
+                renderTasks();
+                updatePremiumUI();
+            }
+        }
+
+        function filterTasks(filter) {
+            // Check if premium filter is clicked but user is not premium
+            if (!currentUser.isPremium && (filter === 'high' || filter === 'today')) {
+                showToast('Fitur ini khusus Premium! Upgrade sekarang', 'warning');
+                showPremiumModal();
+                return;
+            }
+            
+            currentFilter = filter;
+            
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.classList.remove('btn-primary', 'active');
+                btn.classList.add('btn-outline-primary');
+            });
+            event.target.classList.remove('btn-outline-primary');
+            event.target.classList.add('btn-primary', 'active');
+            
+            renderTasks();
+        }
+
+        function searchTasks() {
+            if (!currentUser.isPremium) {
+                showToast('Fitur search khusus Premium!', 'warning');
+                return;
+            }
+            const searchTerm = document.getElementById('searchTask').value.toLowerCase();
+            renderTasks(searchTerm);
+        }
+
+        function renderTasks(searchTerm = '') {
+            const tasksList = document.getElementById('tasksList');
+            
+            let filteredTasks = tasks;
+            
+            // Apply filter
+            if (currentFilter === 'active') {
+                filteredTasks = tasks.filter(t => !t.completed);
+            } else if (currentFilter === 'completed') {
+                filteredTasks = tasks.filter(t => t.completed);
+            } else if (currentFilter === 'high' && currentUser.isPremium) {
+                filteredTasks = tasks.filter(t => t.priority === 'high');
+            } else if (currentFilter === 'today' && currentUser.isPremium) {
+                const today = new Date().toDateString();
+                filteredTasks = tasks.filter(t => {
+                    if (!t.deadline) return false;
+                    return new Date(t.deadline).toDateString() === today;
+                });
+            }
+            
+            // Apply search
+            if (searchTerm && currentUser.isPremium) {
+                filteredTasks = filteredTasks.filter(t => 
+                    t.title.toLowerCase().includes(searchTerm) ||
+                    t.description.toLowerCase().includes(searchTerm)
+                );
+            }
+            
+            // Update task count
+            const countElement = document.getElementById('currentTaskCount');
+            if (countElement) {
+                countElement.textContent = tasks.length;
+            }
+            
+            if (filteredTasks.length === 0) {
+                tasksList.innerHTML = `
+                    <div class="empty-state">
+                        <i class="bi bi-inbox"></i>
+                        <h5>Tidak ada tugas</h5>
+                        <p>Mulai tambahkan tugas baru untuk meningkatkan produktivitas Anda!</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            tasksList.innerHTML = filteredTasks.map(task => {
+                const priorityColors = {
+                    high: 'danger',
+                    medium: 'warning',
+                    low: 'info'
+                };
+                
+                const categoryIcons = {
+                    work: '💼',
+                    personal: '👤',
+                    study: '📚',
+                    health: '🏃',
+                    other: '📌'
+                };
+                
+                const categoryNames = {
+                    work: 'Pekerjaan',
+                    personal: 'Pribadi',
+                    study: 'Belajar',
+                    health: 'Kesehatan',
+                    other: 'Lainnya'
+                };
+                
+                const priorityNames = {
+                    high: 'Tinggi',
+                    medium: 'Sedang',
+                    low: 'Rendah'
+                };
+                
+                let priorityClass = task.priority !== 'none' ? `${task.priority}-priority` : '';
+                let premiumClass = currentUser.isPremium && (task.priority !== 'none' || task.category || task.deadline) ? 'premium-task' : '';
+                
+                return `
+                    <div class="task-card ${task.completed ? 'completed' : ''} ${priorityClass} ${premiumClass}">
+                        ${!currentUser.isPremium && (task.priority === 'none' && !task.category && !task.deadline) ? '<div class="lock-icon"><i class="bi bi-circle-fill"></i> Free</div>' : ''}
+                        ${currentUser.isPremium && (task.priority !== 'none' || task.category || task.deadline) ? '<div class="lock-icon" style="background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%); color: #000;"><i class="bi bi-star-fill"></i> Premium</div>' : ''}
+                        
+                        <div class="d-flex justify-content-between align-items-start mb-2">
+                            <div class="flex-grow-1">
+                                <h5 class="task-title mb-1">${escapeHtml(task.title)}</h5>
+                                <div class="mb-2">
+                                    ${task.category ? `<span class="category-badge bg-${priorityColors[task.priority] || 'secondary'} text-white">${categoryIcons[task.category]} ${categoryNames[task.category]}</span>` : ''}
+                                    ${task.priority !== 'none' ? `<span class="priority-badge bg-${priorityColors[task.priority]} text-white">${task.priority === 'high' ? '🔴' : task.priority === 'medium' ? '🟡' : '🔵'} ${priorityNames[task.priority]}</span>` : ''}
+                                </div>
+                            </div>
+                            <span class="badge ${task.completed ? 'bg-success' : 'bg-warning text-dark'}">
+                                ${task.completed ? '✓ Selesai' : '○ Belum'}
+                            </span>
+                        </div>
+                        
+                        <p class="task-description">${escapeHtml(task.description)}</p>
+                        
+                        <small class="text-muted d-block mb-2">
+                            <i class="bi bi-calendar-plus"></i> Dibuat: ${formatDate(task.createdAt)}
+                            ${task.deadline ? `<br><i class="bi bi-alarm"></i> <strong>Deadline:</strong> ${formatDate(task.deadline)}` : ''}
+                            ${task.completed && task.completedAt ? `<br><i class="bi bi-check-circle"></i> Selesai: ${formatDate(task.completedAt)}` : ''}
+                        </small>
+                        
+                        <div class="task-actions">
+                            <button class="btn btn-sm ${task.completed ? 'btn-secondary' : 'btn-success'}" 
+                                    onclick="toggleTask(${task.id})">
+                                <i class="bi bi-${task.completed ? 'arrow-counterclockwise' : 'check-circle'}"></i>
+                                ${task.completed ? 'Buka Lagi' : 'Tandai Selesai'}
+                            </button>
+                            <button class="btn btn-sm btn-danger" onclick="deleteTask(${task.id})">
+                                <i class="bi bi-trash"></i> Hapus
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Profile Functions
+        function showProfile() {
+            document.getElementById('taskSection').style.display = 'none';
+            document.getElementById('profileSection').style.display = 'block';
+            
+            document.getElementById('profileName').textContent = currentUser.name;
+            document.getElementById('profileEmail').textContent = currentUser.email;
+            
+            // Update avatar
+            const avatar = document.getElementById('profileAvatar');
+            if (currentUser.isPremium) {
+                avatar.classList.add('premium');
+            } else {
+                avatar.classList.remove('premium');
+            }
+            
+            // Update plan badge
+            const planBadge = currentUser.isPremium 
+                ? '<span class="badge bg-warning text-dark"><i class="bi bi-star-fill"></i> Premium Member</span>'
+                : '<span class="badge bg-secondary">Free Plan</span>';
+            document.getElementById('profilePlan').innerHTML = planBadge;
+            
+            // Update stats
+            document.getElementById('totalTasks').textContent = tasks.length;
+            document.getElementById('completedTasks').textContent = tasks.filter(t => t.completed).length;
+            document.getElementById('activeTasks').textContent = tasks.filter(t => !t.completed).length;
+            
+            // Premium stats
+            if (currentUser.isPremium) {
+                document.getElementById('premiumStats').style.display = 'block';
+                const completionRate = tasks.length > 0 
+                    ? Math.round((tasks.filter(t => t.completed).length / tasks.length) * 100)
+                    : 0;
+                document.getElementById('weeklyCompletion').textContent = completionRate + '%';
+                
+                // Calculate average completion time
+                const completedTasks = tasks.filter(t => t.completed && t.completedAt && t.createdAt);
+                if (completedTasks.length > 0) {
+                    const avgTime = completedTasks.reduce((sum, t) => {
+                        const created = new Date(t.createdAt);
+                        const completed = new Date(t.completedAt);
+                        const hours = (completed - created) / (1000 * 60 * 60);
+                        return sum + hours;
+                    }, 0) / completedTasks.length;
+                    document.getElementById('avgCompletionTime').textContent = avgTime.toFixed(1) + 'h';
+                } else {
+                    document.getElementById('avgCompletionTime').textContent = '0h';
+                }
+            } else {
+                document.getElementById('premiumStats').style.display = 'none';
+            }
+        }
+
+        function showTasks() {
+            document.getElementById('profileSection').style.display = 'none';
+            document.getElementById('taskSection').style.display = 'block';
+        }
+
+        function resetAllTasks() {
+            if (confirm('Apakah Anda yakin ingin menghapus SEMUA tugas? Tindakan ini tidak dapat dibatalkan!')) {
+                if (confirm('Konfirmasi sekali lagi: HAPUS SEMUA TUGAS?')) {
+                    tasks = [];
+                    saveTasks();
+                    showToast('Semua tugas berhasil dihapus!', 'danger');
+                    renderTasks();
+                    showTasks();
+                    updatePremiumUI();
+                }
+            }
+        }
+
+        // Premium Modal Functions
+        function showPremiumModal() {
+            document.getElementById('premiumModal').classList.add('show');
+            document.getElementById('pricingSection').style.display = 'block';
+            document.getElementById('paymentSection').style.display = 'none';
+            document.getElementById('paymentSection').classList.remove('show');
+            document.getElementById('paymentSuccess').style.display = 'none';
+            document.getElementById('paymentForm').style.display = 'none';
+            currentDiscount = 0;
+            
+            // Reset payment form
+            document.getElementById('promoCode').value = '';
+            document.getElementById('promoSuccess').style.display = 'none';
+            document.getElementById('totalPayment').textContent = 'Rp 49.000';
+            
+            // Remove active class from all payment methods
+            document.querySelectorAll('.payment-method').forEach(el => {
+                el.classList.remove('active');
+            });
+        }
+
+        function closePremiumModal() {
+            document.getElementById('premiumModal').classList.remove('show');
+        }
+
+        function showPaymentSection() {
+            document.getElementById('pricingSection').style.display = 'none';
+            document.getElementById('paymentSection').style.display = 'block';
+            document.getElementById('paymentSection').classList.add('show');
+        }
+
+        function backToPricing() {
+            document.getElementById('paymentSection').classList.remove('show');
+            document.getElementById('paymentSection').style.display = 'none';
+            document.getElementById('pricingSection').style.display = 'block';
+            document.getElementById('paymentForm').style.display = 'none';
+            currentDiscount = 0;
+        }
+
+        function selectPaymentMethod(method) {
+            selectedPaymentMethod = method;
+            
+            // Update UI
+            document.querySelectorAll('.payment-method').forEach(el => {
+                el.classList.remove('active');
+            });
+            event.currentTarget.classList.add('active');
+            
+            // Show payment form
+            document.getElementById('paymentForm').style.display = 'block';
+            
+            // Show/hide fields based on method
+            if (method === 'bank') {
+                document.getElementById('phoneNumberField').style.display = 'none';
+                document.getElementById('bankAccountField').style.display = 'block';
+                document.getElementById('paymentPhone').required = false;
+            } else {
+                document.getElementById('phoneNumberField').style.display = 'block';
+                document.getElementById('bankAccountField').style.display = 'none';
+                document.getElementById('paymentPhone').required = true;
+            }
+        }
+
+        function applyPromo() {
+            const promoCode = document.getElementById('promoCode').value.toUpperCase().trim();
+            
+            if (!promoCode) {
+                showToast('Masukkan kode promo terlebih dahulu!', 'warning');
+                return;
+            }
+            
+            if (promoCodes[promoCode]) {
+                const discount = promoCodes[promoCode];
+                currentDiscount = discount.discount;
+                showToast(`Kode promo diterapkan! ${discount.description}`, 'success');
+                document.getElementById('promoSuccess').style.display = 'block';
+                
+                // Update price display
+                const newPrice = 49000 - discount.discount;
+                document.getElementById('totalPayment').textContent = `Rp ${newPrice.toLocaleString('id-ID')}`;
+            } else {
+                showToast('Kode promo tidak valid!', 'danger');
+                document.getElementById('promoSuccess').style.display = 'none';
+                currentDiscount = 0;
+                document.getElementById('totalPayment').textContent = 'Rp 49.000';
+            }
+        }
+
+        function processPayment(e) {
+            e.preventDefault();
+            
+            if (!selectedPaymentMethod) {
+                showToast('Pilih metode pembayaran terlebih dahulu!', 'warning');
+                return;
+            }
+            
+            // Simulate payment processing
+            showToast('Memproses pembayaran...', 'info');
+            
+            // Disable button to prevent double submission
+            const submitBtn = e.target.querySelector('button[type="submit"]');
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Memproses...';
+            
+            setTimeout(() => {
+                // Generate order ID
+                const orderId = 'ST' + Date.now();
+                
+                // Calculate expiry date (1 month from now)
+                const expiryDate = new Date();
+                expiryDate.setMonth(expiryDate.getMonth() + 1);
+                
+                // Update user premium status
+                currentUser.isPremium = true;
+                currentUser.premiumExpiry = expiryDate.toISOString();
+                
+                // Save to localStorage
+                updateUserPremiumStatus(true, expiryDate.toISOString());
+                
+                // Update session
+                if (localStorage.getItem('smarttask_session')) {
+                    localStorage.setItem('smarttask_session', JSON.stringify(currentUser));
+                } else {
+                    sessionStorage.setItem('smarttask_session', JSON.stringify(currentUser));
+                }
+                
+                // Show success
+                document.getElementById('orderId').textContent = orderId;
+                
+                const methodNames = {
+                    'gopay': 'GoPay',
+                    'ovo': 'OVO',
+                    'dana': 'DANA',
+                    'bank': 'Transfer Bank',
+                    'qris': 'QRIS'
+                };
+                document.getElementById('paymentMethod').textContent = methodNames[selectedPaymentMethod];
+                document.getElementById('expiryDate').textContent = formatDate(expiryDate.toISOString());
+                
+                document.getElementById('paymentSection').style.display = 'none';
+                document.getElementById('paymentSuccess').style.display = 'block';
+                
+                // Re-enable button
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = '<i class="bi bi-credit-card"></i> Bayar Sekarang';
+            }, 2000);
+        }
+
+        function updateUserPremiumStatus(isPremium, expiryDate) {
+            let users = JSON.parse(localStorage.getItem('smarttask_users') || '[]');
+            const userIndex = users.findIndex(u => u.id === currentUser.id);
+            
+            if (userIndex !== -1) {
+                users[userIndex].isPremium = isPremium;
+                users[userIndex].premiumExpiry = expiryDate;
+                localStorage.setItem('smarttask_users', JSON.stringify(users));
+            }
+        }
+
+        function closePaymentSuccess() {
+            closePremiumModal();
+            updatePremiumUI();
+            renderTasks();
+            showToast('🎉 Selamat! Anda sekarang pengguna Premium!', 'success');
+            
+            // Show confetti effect (simple version)
+            setTimeout(() => {
+                showToast('✨ Semua fitur premium sudah aktif!', 'info');
+            }, 1000);
+        }
+
+        // Dark Mode
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+            const isDark = document.body.classList.contains('dark-mode');
+            localStorage.setItem('smarttask_darkmode', isDark);
+            
+            const icon = document.querySelector('.dark-mode-toggle i');
+            icon.className = isDark ? 'bi bi-sun-fill' : 'bi bi-moon-stars-fill';
+        }
+
+        function checkDarkMode() {
+            const isDark = localStorage.getItem('smarttask_darkmode') === 'true';
+            if (isDark) {
+                document.body.classList.add('dark-mode');
+                const icon = document.querySelector('.dark-mode-toggle i');
+                icon.className = 'bi bi-sun-fill';
+            }
+        }
+
+        // Utility Functions
+        function showAlert(elementId, message, type) {
+            const alertDiv = document.getElementById(elementId);
+            alertDiv.innerHTML = `
+                <div class="alert alert-${type} alert-dismissible fade show" role="alert">
+                    ${message}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            `;
+            
+            setTimeout(() => {
+                alertDiv.innerHTML = '';
+            }, 5000);
+        }
+
+        function showToast(message, type) {
+            const toast = document.createElement('div');
+            toast.className = `alert alert-${type} position-fixed top-0 start-50 translate-middle-x mt-3`;
+            toast.style.zIndex = '99999';
+            toast.style.minWidth = '300px';
+            toast.style.textAlign = 'center';
+            
+            const icons = {
+                'success': 'check-circle-fill',
+                'warning': 'exclamation-triangle-fill',
+                'danger': 'x-circle-fill',
+                'info': 'info-circle-fill'
+            };
+            
+            toast.innerHTML = `
+                <i class="bi bi-${icons[type] || 'info-circle-fill'} me-2"></i>
+                ${message}
+            `;
+            
+            document.body.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transform = 'translateX(-50%) translateY(-20px)';
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+
+        function escapeHtml(text) {
+            const map = {
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;',
+                '"': '&quot;',
+                "'": '&#039;'
+            };
+            return text.replace(/[&<>"']/g, m => map[m]);
+        }
+
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            const options = { 
+                year: 'numeric', 
+                month: 'short', 
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            };
+            return date.toLocaleDateString('id-ID', options);
+        }
+    </script>
+</body>
+</html>
